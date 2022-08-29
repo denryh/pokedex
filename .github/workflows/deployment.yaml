@@ -28,6 +28,6 @@ jobs:
       - name: deploy
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
-          heroku-api-key: ${{secrets.HEROKU_API_KEY}}
-          heroku-app-name: "pokedex"
-          heroku-email: "danielatlas101101@gmail.com"
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: pokedex
+          heroku_email: danielatlas101101@gmail.com
