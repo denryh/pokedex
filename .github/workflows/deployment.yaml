@@ -35,3 +35,14 @@ jobs:
           heroku_app_name: pokehex
           heroku_email: danielatlas101101@gmail.com
           healthcheck: https://pokehex.herokuapp.com/health
+        if: ${{github.event_name == 'push'}}
+  tag_release:
+    needs: [simple_deployment_pipeline]
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.36.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
+        if: ${{github.event_name == 'push'}}
