@@ -36,13 +36,25 @@ jobs:
           heroku_email: danielatlas101101@gmail.com
           healthcheck: https://pokehex.herokuapp.com/health
         if: ${{github.event_name == 'push' && !contains(join(github.event.commits.*.message, ', '), '#skip')}}
+      - name: notify successful deployment
+        if: ${{ success() }}
+        with:
+          severity: info
+          text: 'A new version of Pokehex deployed'
+          webhookUrl: ${{secrets.DISCORD_WEBHOOK}}
+      - name: notify failed deployment
+        if: ${{ failed() }}
+        with:
+          severity: error
+          text: 'Build failed'
+          webhookUrl: ${{secrets.DISCORD_WEBHOOK}}
   tag_release:
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
       - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@1.36.0
+        uses: anothrNick/github-tag-action@3840ec22ac98e14d981375e3ae2d8d0392964521
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
