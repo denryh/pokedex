@@ -37,12 +37,14 @@ jobs:
           healthcheck: https://pokehex.herokuapp.com/health
         if: ${{github.event_name == 'push' && !contains(join(github.event.commits.*.message, ', '), '#skip')}}
       - name: notify successful deployment
+        uses: rjstone/discord-webhook-notify@v1
         if: ${{ success() }}
         with:
           severity: info
           text: 'A new version of Pokehex deployed'
           webhookUrl: ${{secrets.DISCORD_WEBHOOK}}
       - name: notify failed deployment
+        uses: rjstone/discord-webhook-notify@v1
         if: ${{ failed() }}
         with:
           severity: error
